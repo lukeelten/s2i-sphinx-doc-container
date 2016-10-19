@@ -6,7 +6,49 @@
 docker build -t s2i-sphinx-doc .
 ```
 
-## Initialize documentation
+## Want to try it right now?
+
+Download the latest Openshift S2I release and run:
+
+``` bash
+s2i build https://github.com/iconoeugen/s2i-sphinx-doc-container.git --context-dir=test iconoeugen/s2i-sphinx-doc sphinx-doc-sample-app
+docker run -p 8080:8080 sphinx-doc-sample-app
+```
+
+**Accessing the application:**
+
+$ curl 127.0.0.1:8080
+
+### Debug the scripts
+
+To start each script manually to build the documentation and to run the HTTP server, you can start a docker instance:
+
+``` bash
+docker run -it --rm -p 8080:8080 -u $UID -v $PWD/test:/tmp/src iconoeugen/s2i-sphinx-doc bash
+```
+
+To build the documentation inside the running container:
+
+``` bash
+/usr/libexec/s2i/assemble
+```
+
+To run the HTTP server inside the running container:
+
+``` bash
+/usr/libexec/s2i/run
+```
+
+## Environment variables
+
+To set these environment variables, you can place them as a key value pair into a .s2i/environment file inside your source code repository.
+
+* **PIP_INDEX_URL**
+
+    Set this variable to use a custom index URL or mirror to download required packages
+    during build process. This only affects packages listed in requirements.txt.
+
+## Initialize documentation in source code repository
 
 ``` bash
 docker run -it -rm -u $UID -v docs:/opt/app-root/src s2i-sphinx-doc bash
@@ -91,7 +133,7 @@ source files. Use the Makefile to build the docs, like so:
 where "builder" is one of the supported builders, e.g. html, latex or linkcheck.
 ```
 
-## Add dependencies
+### Add dependencies
 
 The requirements file is a way to get pip to install specific packages to make up an environment.
 The requrement file must be named `requirements.txt` as expected by `pip`
@@ -110,33 +152,20 @@ and define the new python dependency in `requirements.txt` file:
 sphinx_rtd_theme
 ```
 
-## Want to try it right now?
+## Openshift deploy template
 
-Download the latest Openshift S2I release and run:
+### Create image stream
 
-``` bash
-s2i build https://github.com/iconoeugen/s2i-sphinx-doc-container.git --context-dir=test iconoeugen/s2i-sphinx-doc sphinx-doc-sample-app
-docker run -p 8080:8080 sphinx-doc-sample-app
-```
-
-## Debug the scripts
-
-To start each script manually to build the documentation and to run the HTTP server, you can start a docker instance:
+You must create an image stream for the S2I image builder before creating an application:
 
 ``` bash
-docker run -it --rm -p 8080:8080 -u $UID -v $PWD/test:/tmp/src iconoeugen/s2i-sphinx-doc bash
+oc create -f openshift/image-stream.json -n openshift
 ```
 
-To build the documentation inside the running container:
+### Upload application template
+
+To upload the template to your current project’s template library, pass the JSON file with the following command:
 
 ``` bash
-/usr/libexec/s2i/assemble
+oc create -f openshift/template.json
 ```
-
-To run the HTTP server inside the running container:
-
-``` bash
-/usr/libexec/s2i/run
-```
-
-
