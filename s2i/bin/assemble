@@ -27,6 +27,3 @@ rm -rf /tmp/pip_build_default
 fix-permissions ./
 # set permissions for any installed artifacts
 fix-permissions /opt/app-root
-
-echo "---> Clean build cache ..."
-env
