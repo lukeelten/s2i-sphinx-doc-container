@@ -11,7 +11,7 @@ docker build -t s2i-sphinx-doc .
 Download the latest Openshift S2I release and run:
 
 ``` bash
-s2i build https://github.com/iconoeugen/s2i-sphinx-doc-container.git --context-dir=test iconoeugen/s2i-sphinx-doc sphinx-doc-sample-app
+s2i build https://github.com/iconoeugen/s2i-sphinx-doc-container.git --context-dir=test/test-app iconoeugen/s2i-sphinx-doc sphinx-doc-sample-app
 docker run -p 8080:8080 sphinx-doc-sample-app
 ```
 
@@ -24,7 +24,7 @@ $ curl 127.0.0.1:8080
 To start each script manually to build the documentation and to run the HTTP server, you can start a docker instance:
 
 ``` bash
-docker run -it --rm -p 8080:8080 -u $UID -v $PWD/test:/tmp/src iconoeugen/s2i-sphinx-doc bash
+docker run -it --rm -p 8080:8080 -u $UID -v $PWD/test/test-app:/tmp/src iconoeugen/s2i-sphinx-doc bash
 ```
 
 To build the documentation inside the running container:

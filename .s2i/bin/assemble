@@ -1,0 +1,48 @@
+#!/bin/bash -e
+#
+# S2I assemble script for the 's2i-sphinx-doc' image.
+# The 'assemble' script builds your application source so that it is ready to run.
+#
+# For more information refer to the documentation:
+#       https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+#
+
+if [[ "$1" == "-h" ]]; then
+  # If the 's2i-sphinx-doc' assemble script is executed with '-h' flag,
+  # print the usage.
+  exec /usr/libexec/s2i/usage
+fi
+
+# Restore artifacts from the previous build (if they exist).
+#
+if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+  echo "---> Restoring build artifacts..."
+  mv /tmp/artifacts/. ./
+fi
+
+echo "---> Installing application source..."
+shopt -s dotglob
+cp -Rf /tmp/src/. ./
+
+echo "---> Building application from source..."
+if [[ -f requirements.txt ]]; then
+  echo "---> Installing dependencies ..."
+  pip install --user -r requirements.txt
+fi
+
+if [[ -f Makefile ]]; then
+  echo "---> Installing application ..."
+  SPHINXBUILD=sphinx-build
+  [[ -f .local/bin/sphinx-build ]] && SPHINXBUILD=.local/bin/sphinx-build
+  make SPHINXBUILD=${SPHINXBUILD} BUILDDIR=.. html
+fi
+
+echo "---> Clean build cache ..."
+rm -rf .cache .local doctrees ./*
+# remove pip temporary directory
+rm -rf /tmp/pip_build_default
+
+# Fix source directory permissions
+fix-permissions ./
+# set permissions for any installed artifacts
+fix-permissions /opt/app-root

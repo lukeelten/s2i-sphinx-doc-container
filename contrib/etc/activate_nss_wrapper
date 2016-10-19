@@ -1,6 +1,6 @@
 : ${USER:=default}
 
-log_info "Activating nss_wrapper with username %s" ${USER}
+echo "Activating nss_wrapper with username ${USER}"
 
 export USER_ID=$(id -u)
 export GROUP_ID=$(id -g)
