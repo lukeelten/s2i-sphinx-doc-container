@@ -51,7 +51,7 @@ To set these environment variables, you can place them as a key value pair into 
 ## Initialize documentation in source code repository
 
 ``` bash
-docker run -it -rm -u $UID -v docs:/opt/app-root/src s2i-sphinx-doc bash
+docker run -it --rm -u $UID -v docs:/opt/app-root/src s2i-sphinx-doc bash
 ```
 
 Populate the documentation with a new Sphix documentation
