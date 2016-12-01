@@ -13,6 +13,9 @@ if [[ "$1" == "-h" ]]; then
   exec /usr/libexec/s2i/usage
 fi
 
+: ${CONTEXT_PATH:=/}
+: ${MAKE_TARGET:=html}
+
 # Restore artifacts from the previous build (if they exist).
 #
 if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
@@ -34,9 +37,9 @@ if [[ -f Makefile ]]; then
   echo "---> Installing application ..."
   SPHINXBUILD=sphinx-build
   [[ -f .local/bin/sphinx-build ]] && SPHINXBUILD=.local/bin/sphinx-build
-  make SPHINXBUILD=${SPHINXBUILD} BUILDDIR=../ html
+  make SPHINXBUILD=${SPHINXBUILD} BUILDDIR=../ ${MAKE_TARGET}
   mkdir -p ../www
-  mv ../html ../www/${CONTEXT_PATH}
+  mv ../${MAKE_TARGET} ../www/${CONTEXT_PATH}
 fi
 
 echo "---> Clean build cache ..."

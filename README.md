@@ -12,12 +12,13 @@ To generate the documentation and make it available under a different context pa
 
 ``` bash
 export CONTEXT_PATH=/
+export MAKE_TARGET=html
 ```
 
 Download the latest Openshift S2I tool and run the build:
 
 ``` bash
-s2i build https://github.com/iconoeugen/s2i-sphinx-doc-container.git --context-dir=test/test-app -e CONTEXT_PATH=${CONTEXT_PATH} iconoeugen/s2i-sphinx-doc sphinx-doc-sample-app
+s2i build https://github.com/iconoeugen/s2i-sphinx-doc-container.git --context-dir=test/test-app -e CONTEXT_PATH=${CONTEXT_PATH} -e MAKE_TARGET=${MAKE_TARGET} iconoeugen/s2i-sphinx-doc sphinx-doc-sample-app
 ```
 
 Test the generated documentation:
@@ -64,6 +65,10 @@ To set these environment variables, you can place them as a key value pair into 
 * **CONTEXT_PATH**
 
     The prefix of a URL path where the documentation will be made available. (Default: `/`)
+
+* **MAKE_TARGET**
+
+    A format is selected by specifying the builder name that is provided as target to sphinx generated Makefile. (Default: `html`)
 
 ## Initialize documentation in source code repository
 
