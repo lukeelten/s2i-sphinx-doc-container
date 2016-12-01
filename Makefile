@@ -1,5 +1,5 @@
 
-IMAGE_NAME = s2i-sphinx-doc
+IMAGE_NAME = iconoeugen/s2i-sphinx-doc
 
 build:
 	docker build -t $(IMAGE_NAME) .
