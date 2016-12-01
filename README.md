@@ -3,21 +3,34 @@
 ## Build Docker image
 
 ``` bash
-docker build -t s2i-sphinx-doc .
+docker build -t iconoeugen/s2i-sphinx-doc .
 ```
 
 ## Want to try it right now?
 
-Download the latest Openshift S2I release and run:
+To generate the documentation and make it available under a different context path, you can change the the following line accordingly:
 
 ``` bash
-s2i build https://github.com/iconoeugen/s2i-sphinx-doc-container.git --context-dir=test/test-app iconoeugen/s2i-sphinx-doc sphinx-doc-sample-app
+export CONTEXT_PATH=/
+```
+
+Download the latest Openshift S2I tool and run the build:
+
+``` bash
+s2i build https://github.com/iconoeugen/s2i-sphinx-doc-container.git --context-dir=test/test-app -e CONTEXT_PATH=${CONTEXT_PATH} iconoeugen/s2i-sphinx-doc sphinx-doc-sample-app
+```
+
+Test the generated documentation:
+
+```
 docker run -p 8080:8080 sphinx-doc-sample-app
 ```
 
 **Accessing the application:**
 
-$ curl 127.0.0.1:8080
+``` bash
+curl http://127.0.0.1:8080/${CONTEXT_PATH}
+```
 
 ### Debug the scripts
 
@@ -47,6 +60,10 @@ To set these environment variables, you can place them as a key value pair into 
 
     Set this variable to use a custom index URL or mirror to download required packages
     during build process. This only affects packages listed in requirements.txt.
+
+* **CONTEXT_PATH**
+
+    The prefix of a URL path where the documentation will be made available. (Default: `/`)
 
 ## Initialize documentation in source code repository
 
