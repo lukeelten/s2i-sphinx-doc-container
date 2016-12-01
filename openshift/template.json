@@ -43,6 +43,7 @@
       },
       "spec": {
         "host": "${APPLICATION_DOMAIN}",
+        "path": "${PATH}",
         "to": {
           "kind": "Service",
           "name": "${NAME}"
@@ -89,6 +90,10 @@
               {
                   "name": "PIP_INDEX_URL",
                   "value": "${PIP_INDEX_URL}"
+              },
+              {
+                  "name": "CONTEXT_PATH",
+                  "value": "${PATH}"
               }
             ]
           }
@@ -174,7 +179,7 @@
                   "timeoutSeconds": 3,
                   "initialDelaySeconds": 3,
                   "httpGet": {
-                    "path": "/",
+                    "path": "${PATH}",
                     "port": 8080
                   }
                 },
@@ -182,7 +187,7 @@
                   "timeoutSeconds": 3,
                   "initialDelaySeconds": 30,
                   "httpGet": {
-                    "path": "/",
+                    "path": "${PATH}",
                     "port": 8080
                   }
                 },
@@ -243,6 +248,12 @@
       "displayName": "Application Hostname",
       "description": "The exposed hostname that will route to the Django service, if left blank a value will be defaulted.",
       "value": ""
+    },
+    {
+      "name": "PATH",
+      "displayName": "Path",
+      "description": "Path that the router watches to route traffic to the service.",
+      "value": "/"
     },
     {
       "name": "GITHUB_WEBHOOK_SECRET",
