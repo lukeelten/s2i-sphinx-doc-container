@@ -30,6 +30,7 @@ cp -Rf /tmp/src/. ./
 echo "---> Building application from source..."
 if [[ -f requirements.txt ]]; then
   echo "---> Installing dependencies ..."
+  export PATH=$HOME/.local/bin:$PATH
   pip install --user -r requirements.txt
 fi
 
