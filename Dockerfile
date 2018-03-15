@@ -3,17 +3,16 @@ MAINTAINER Horatiu Vlad <horatiu@vlad.eu>
 
 EXPOSE 8080
 
-ENV PYTHON_VERSION=3.5 \
-    PATH=${HOME}/.local/bin/:$PATH
+ENV PATH ${HOME}/.local/bin/:$PATH
 
 LABEL io.k8s.description="Platform for building and running Sphinx documentation" \
-      io.k8s.display-name="Spinx 3.5" \
+      io.k8s.display-name="Spinx 1.5" \
       io.openshift.expose-services="8080:http" \
-      io.openshift.tags="builder,sphinx,python,python35,rh-python35"
+      io.openshift.tags="builder,sphinx,python,python36,rh-python36"
 
 RUN yum install -y centos-release-scl-rh && \
     yum-config-manager --enable centos-sclo-rh-testing && \
-    INSTALL_PKGS="rh-python35 rh-python35-python-devel rh-python35-python-setuptools rh-python35-python-pip rh-python35-python-sphinx.noarch nss_wrapper atlas-devel gcc-gfortran" && \
+    INSTALL_PKGS="rh-python36 rh-python36-python-devel rh-python36-python-setuptools rh-python36-python-pip rh-python36-python-sphinx.noarch nss_wrapper atlas-devel gcc-gfortran" && \
     yum install -y --setopt=tsflags=nodocs --enablerepo=centosplus ${INSTALL_PKGS} && \
     rpm -V ${INSTALL_PKGS} && \
     yum clean all -y
