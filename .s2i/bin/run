@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 #
 # S2I run script for the 's2i-sphinx-doc' image.
 # The run script executes the server that runs your application.
@@ -9,7 +9,20 @@
 
 source /opt/app-root/etc/activate_nss_wrapper
 
-set -e
+# set default value for context path
+: ${CONTEXT_PATH:=/}
+
+# make context path reachable
+www_dir=$(dirname "/www/${CONTEXT_PATH}")
+mkdir -p ../${www_dir}
+ln -s ../build ../${www_dir}/$(basename "/www/${CONTEXT_PATH}")
 
 cd ../www
-exec python3 -m http.server 8080
+
+# if there are arguments supplied we expect the first arg to be a command to be run
+if [ $# -gt 0 ];then
+  echo "Executing command $@"
+  exec "$@"
+else
+  exec python3 -m http.server 8080
+fi

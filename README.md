@@ -18,13 +18,13 @@ export MAKE_TARGET=html
 Download the latest Openshift S2I tool and run the build:
 
 ``` bash
-s2i build https://github.com/iconoeugen/s2i-sphinx-doc-container.git --context-dir=test/test-app -e CONTEXT_PATH=${CONTEXT_PATH} -e MAKE_TARGET=${MAKE_TARGET} iconoeugen/s2i-sphinx-doc sphinx-doc-sample-app
+s2i build https://github.com/iconoeugen/s2i-sphinx-doc-container.git --context-dir=test/test-app -e MAKE_TARGET=${MAKE_TARGET} iconoeugen/s2i-sphinx-doc sphinx-doc-sample-app
 ```
 
 Test the generated documentation:
 
 ```
-docker run -p 8080:8080 sphinx-doc-sample-app
+docker run -p 8080:8080 -e CONTEXT_PATH=${CONTEXT_PATH} sphinx-doc-sample-app
 ```
 
 **Accessing the application:**
@@ -38,7 +38,7 @@ curl http://127.0.0.1:8080/${CONTEXT_PATH}
 To start each script manually to build the documentation and to run the HTTP server, you can start a docker instance:
 
 ``` bash
-docker run -it --rm -p 8080:8080 -u $UID -v $PWD/test/test-app:/tmp/src iconoeugen/s2i-sphinx-doc bash
+docker run -it --rm -p 8080:8080 -u $UID -v $PWD/test/test-app:/tmp/src -e CONTEXT_PATH=${CONTEXT_PATH} iconoeugen/s2i-sphinx-doc bash
 ```
 
 To build the documentation inside the running container:
