@@ -13,11 +13,12 @@ source /opt/app-root/etc/activate_nss_wrapper
 : ${CONTEXT_PATH:=/}
 
 # make context path reachable
-www_dir=$(dirname "/www/${CONTEXT_PATH}")
-mkdir -p ../${www_dir}
-ln -s ../build ../${www_dir}/$(basename "/www/${CONTEXT_PATH}")
-
-cd ../www
+cd ..
+BASE_DIR=$(pwd -P)
+WWW_DIR=$(dirname "${BASE_DIR}/www/${CONTEXT_PATH}")
+mkdir -p "${WWW_DIR}"
+ln -s ${BASE_DIR}/build "${WWW_DIR}/$(basename "${BASE_DIR}/www/${CONTEXT_PATH}")"
+cd ${BASE_DIR}/www
 
 # if there are arguments supplied we expect the first arg to be a command to be run
 if [ $# -gt 0 ];then
