@@ -1,4 +1,4 @@
-FROM openshift/base-centos7
+FROM centos/s2i-base-centos7
 MAINTAINER Horatiu Vlad <horatiu@vlad.eu>
 
 EXPOSE 8080
